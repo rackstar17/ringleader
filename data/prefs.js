@@ -7,3 +7,57 @@
 document.addEventListener('ready', function() {
     console.log('JS LOADED');
 });
+
+
+self.port.on('display', function(commands) {
+	var commands = commands;
+
+
+
+
+
+
+
+var actualCode = '(' + function(commands) {
+    	require([ 'gcli/index', 'demo/index' ], function(gcli) { 
+
+    		for(idx in commands.pnhCommands.commands) {
+    			
+    			gcli.addCommand(commands.pnhCommands.commands[idx]);
+    			
+		    //if (!commands[idx].conditional) {
+		      // if (gcli.addCommand) {
+		      //   // TODO: we could extract list items and dump into addItems?
+		      //   gcli.addCommand(commands[idx]);
+		      // } else {
+		      //   gcli.addItems([commands[idx]]);
+		      // }
+		    }
+		  //}	
+		  
+          
+
+          gcli.createDisplay();
+        });
+
+} + ')('+ JSON.stringify(commands) +');';
+
+
+var script = document.createElement('script');
+script.textContent = actualCode;
+(document.head||document.documentElement).appendChild(script);
+//script.remove();
+});
+
+// for(idx in commands) {
+// 		  	console.log(commands[idx])
+// 		    if (!commands[idx].conditional) {
+// 		      if (gcli.addCommand) {
+// 		      	console.log("\nCommands :", commands[idx])
+// 		        // TODO: we could extract list items and dump into addItems?
+// 		        gcli.addCommand(commands[idx]);
+// 		      } else {
+// 		        gcli.addItems([commands[idx]]);
+// 		      }
+// 		    }
+// 		  }	
