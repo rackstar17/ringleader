@@ -8,6 +8,10 @@ document.addEventListener('ready', function() {
     console.log('JS LOADED');
 });
 
+// self.port.on("doit", function() {
+// 	console.log("inside doit");
+// 	self.port.emit("receive", {});
+// });
 
 self.port.on('display', function(commands) {
 	var commands = commands;
