@@ -8,60 +8,17 @@ document.addEventListener('ready', function() {
     console.log('JS LOADED');
 });
 
-// self.port.on("doit", function() {
-// 	console.log("inside doit");
-// 	self.port.emit("receive", {});
-// });
-
 self.port.on('display', function(commands) {
-	var commands = commands;
-
-
-
-
-
-
-
-var actualCode = '(' + function(commands) {
-    	require([ 'gcli/index', 'demo/index' ], function(gcli) { 
-
-    		for(idx in commands.pnhCommands.commands) {
-    			
-    			gcli.addCommand(commands.pnhCommands.commands[idx]);
-    			
-		    //if (!commands[idx].conditional) {
-		      // if (gcli.addCommand) {
-		      //   // TODO: we could extract list items and dump into addItems?
-		      //   gcli.addCommand(commands[idx]);
-		      // } else {
-		      //   gcli.addItems([commands[idx]]);
-		      // }
-		    }
-		  //}	
-		  
-          
-
+    var actualCode = '(' + function(commands) {
+        require([ 'gcli/index', 'demo/index' ], function(gcli) {
+            for(idx in commands.commands.commands) {
+                gcli.addCommand(commands.commands.commands[idx]);
+            }
           gcli.createDisplay();
         });
+    } + ')('+ JSON.stringify(commands) +');';
 
-} + ')('+ JSON.stringify(commands) +');';
-
-
-var script = document.createElement('script');
-script.textContent = actualCode;
-(document.head||document.documentElement).appendChild(script);
-//script.remove();
+    var script = document.createElement('script');
+    script.textContent = actualCode;
+    (document.head||document.documentElement).appendChild(script);
 });
-
-// for(idx in commands) {
-// 		  	console.log(commands[idx])
-// 		    if (!commands[idx].conditional) {
-// 		      if (gcli.addCommand) {
-// 		      	console.log("\nCommands :", commands[idx])
-// 		        // TODO: we could extract list items and dump into addItems?
-// 		        gcli.addCommand(commands[idx]);
-// 		      } else {
-// 		        gcli.addItems([commands[idx]]);
-// 		      }
-// 		    }
-// 		  }	
