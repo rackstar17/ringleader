@@ -8,11 +8,21 @@ document.addEventListener('ready', function() {
     console.log('JS LOADED');
 });
 
+window.addEventListener('message', function(event) {
+    console.log(event.data);
+    self.port.emit('execute', event.data);
+}, false);
+
 self.port.on('display', function(commands) {
     var actualCode = '(' + function(commands) {
+      // console.log('pref.js:', commands);
         require([ 'gcli/index', 'demo/index' ], function(gcli) {
             for(idx in commands.commands.commands) {
-                gcli.addCommand(commands.commands.commands[idx]);
+              if (commands.commands.commands[idx].hasOwnProperty('exec')) {
+                eval("commands.commands.commands[idx].exec = " + commands.commands.commands[idx].exec);                
+                console.log(commands.commands.commands[idx]);
+              }
+              gcli.addCommand(commands.commands.commands[idx]);
             }
           gcli.createDisplay();
         });
