@@ -8,22 +8,31 @@ document.addEventListener('ready', function() {
     console.log('JS LOADED');
 });
 
+// Sends callback data back to GCLI return statement
 window.addEventListener('message', function(event) {
-    console.log(event.data);
     self.port.emit('execute', event.data);
 }, false);
 
+// Sends a callback signal to addon script
+self.port.on("callback", function(callbackData) {
+  console.log("Callback data in prefs js ", callbackData);
+  var cloned = cloneInto(callbackData, document.defaultView);
+  var evt = document.createEvent('CustomEvent');
+  evt.initCustomEvent("addon-message", true, true, cloned);
+  document.documentElement.dispatchEvent(evt);
+});
+
+// Injects the commands to GCLI webpage
 self.port.on('display', function(commands) {
     var actualCode = '(' + function(commands) {
-      // console.log('pref.js:', commands);
         require([ 'gcli/index', 'demo/index' ], function(gcli) {
             for(idx in commands.commands.commands) {
               if (commands.commands.commands[idx].hasOwnProperty('exec')) {
-                eval("commands.commands.commands[idx].exec = " + commands.commands.commands[idx].exec);                
-                console.log(commands.commands.commands[idx]);
+                eval("commands.commands.commands[idx].exec = " + commands.commands.commands[idx].exec);
               }
               gcli.addCommand(commands.commands.commands[idx]);
             }
+     
           gcli.createDisplay();
         });
     } + ')('+ JSON.stringify(commands) +');';
