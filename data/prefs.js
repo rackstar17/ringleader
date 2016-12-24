@@ -13,18 +13,19 @@ window.addEventListener('message', function(event) {
     self.port.emit('execute', event.data);
 }, false);
 
-// Sends a callback signal to addon script
+// Injects callback data to the document
 self.port.on("callback", function(callbackData) {
-  console.log("Callback data in prefs js ", callbackData);
-  var cloned = cloneInto(callbackData, document.defaultView);
-  var evt = document.createEvent('CustomEvent');
-  evt.initCustomEvent("addon-message", true, true, cloned);
-  document.documentElement.dispatchEvent(evt);
+  document.querySelector('.sidebar-output').innerHTML += '<br> \> ' + callbackData.callbackData;
+  //var cloned = cloneInto(greeting, document.defaultView);
+   // var evt = document.createEvent('CustomEvent');
+   // evt.initCustomEvent("refresh-lookup", true, true, callbackData.lookupData);
+   // document.documentElement.dispatchEvent(evt);
 });
 
 // Injects the commands to GCLI webpage
 self.port.on('display', function(commands) {
     var actualCode = '(' + function(commands) {
+
         require([ 'gcli/index', 'demo/index' ], function(gcli) {
             for(idx in commands.commands.commands) {
               if (commands.commands.commands[idx].hasOwnProperty('exec')) {
@@ -39,5 +40,5 @@ self.port.on('display', function(commands) {
 
     var script = document.createElement('script');
     script.textContent = actualCode;
-    (document.head||document.documentElement).appendChild(script);
+    (document.head || document.documentElement).appendChild(script);
 });

@@ -19,11 +19,22 @@ one at http://mozilla.org/MPL/2.0/.
 
   <body style="width: 80%;">
   <div id="gcli-root" style="display: inline-block; width: 70%"></div>
-  <div class="sidebar-output" style="width: 25%;background: #000;position: fixed;top: 0;height: 100%;right: 0; color: #fff;">
+  <div class="sidebar-output" style="width: 25%;background: #000;position: fixed;top: 0;height: 100%;right: 0; color: #00ff00;">
   </div>
   <script src="../lib/gcli-uncompressed.js" type="text/javascript"></script>
 </body>
 
+<!-- <script>
+var lookupData = [["hello", "moto"]];
+window.addEventListener('refresh-lookup', function(event) {
+  // Refreshes the lookupData for PnH
+  lookupData = event.detail;
+}, false);
+
+var doLookup = function() {
+  console.log("hola");
+}
+</script> -->
 
 
 </html>
